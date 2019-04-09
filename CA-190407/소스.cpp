@@ -29,9 +29,12 @@ namespace bbb {
 void main()
 {
 	
+char alist[]="HelloWorld";
+alist[5] = '1';
+alist[10] = '3';   //¿À¹ö·± ¤¸¤¸
 
-
-
+//alist[11] = '4';
+//alist[12] = '5';
 		int bbc = 0;
 		int ex = 11;
 
