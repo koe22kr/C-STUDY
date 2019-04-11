@@ -1,10 +1,11 @@
-#define _CRT__CRT_SECURE_NO_WARNINGS
+
 #define _CRT_SECURE_NO_WARNINGS  
 
 #include <iostream>
 #include<conio.h>
 #include <string>
 #include <stdio.h>
+#include <stdlib.h>
 
 //#ifdef DEBUG
 
@@ -32,7 +33,7 @@ struct StudyData
 };
 
 int MemberNumber = 0;
-StudyData* pStData=NULL;
+StudyData* pStData;
 FILE* fp;
 StudyData* padddata = NULL;
 char UsingFileName[25] = { 0 };
@@ -55,6 +56,7 @@ void F_Create()
 }
 void F_Load()
 {
+	if (fp!= NULL)fclose(fp);
 	
 		if (*UsingFileName == NULL)
 		{
@@ -68,12 +70,13 @@ void F_Load()
 			fp=fopen(UsingFileName, "r+t");//
 		}
 		
-	fscanf(fp, "%d\n",&MemberNumber);
+	
 	if (pStData != nullptr)
 	{
 		free(pStData);
 	}
-	pStData = (StudyData*)calloc(sizeof(StudyData),MemberNumber);
+	fscanf(fp, "%d\n", &MemberNumber);
+	pStData = (StudyData*)malloc(sizeof(StudyData)*MemberNumber);
 
 	for (int i = 0; i < MemberNumber; i++)
 	{
@@ -81,30 +84,41 @@ void F_Load()
 		fscanf(fp, "%s	 %d		 %d		 %d		 %d		 %d",
 			&pStData[i].Name, &pStData[i].Kor, &pStData[i].Eng,
 			&pStData[i].Math, &pStData[i].Society, &pStData[i].Science);
+	
 	}
+	
 }
+
 
 void F_Save()      //MemberNumber,Fp   //fclose(fp) free(pStData,padddata) 세이브시 파일닫음.
 {
+	int iDeletecount = 0;
 	if (*UsingFileName == NULL)
 	{
 		printf("열린 파일이 없습니다.");
 		return;
 	}
+	F_Create();
 	fseek(fp, 0, SEEK_SET);
 	fprintf(fp, "%d\n", MemberNumber);
-	for (int i = 0; i < MemberNumber; i++)
+	for (int i = 0; i < MemberNumber+iDeletecount; i++)
 	{
-		fprintf(fp, "%s %d %d %d %d %d\n",
-			pStData[i].Name, pStData[i].Kor, pStData[i].Eng,
-			pStData[i].Math, pStData[i].Society, pStData[i].Science);
-
+		if (pStData[i].Name == NULL)
+		{
+			++iDeletecount;
+		}
+		else
+		{
+				fprintf(fp, "%s %d %d %d %d %d\n",
+				pStData[i].Name, pStData[i].Kor, pStData[i].Eng,
+				pStData[i].Math, pStData[i].Society, pStData[i].Science);
+		}
 	}
 	
 	
-	fclose(fp);
+	
 	F_Load();
-		
+	fclose(fp);
 }
 
 void F_Add()
@@ -132,14 +146,13 @@ void F_Add()
 	scanf("%d", &padddata->Science );
 	
 	fseek(fp, 0, SEEK_SET);
-	fprintf(fp, "%d\n", ++MemberNumber);
+	fprintf(fp, "%d\n", ++MemberNumber);///////
 	fseek(fp, 0, SEEK_END);
-	fprintf(fp, "\n%s %d %d %d %d %d",
+	fprintf(fp, "%s %d %d %d %d %d\n",
 		padddata->Name, padddata->Kor, padddata->Eng,
 		padddata->Math, padddata->Society, padddata->Science);
 	
 	free(padddata);
-	
 	fclose(fp);
 	F_Load();
 }
@@ -149,28 +162,29 @@ int F_Search() //이름 중복은 예외로 한다. 구조체 계수반환;
 	char keyward[20];
 	printf("검색할 이름을 입력해주세요. : ");
 	scanf("%s", keyward);
+	_getch();
 	for (int i = 0; i < MemberNumber; i++)
 	{
 		psearched = strstr(pStData[i].Name, keyward);
 		if (psearched != NULL)
 		{
-			printf("%d번 이름:%s 국어:%d 영어:%d 수학:%d 사회:%d 과학:%d", i, pStData[i].Name, pStData[i].Kor, pStData[i].Eng,
+			printf("%d번 이름:%s 국어:%d 영어:%d 수학:%d 사회:%d 과학:%d\n", i+1, pStData[i].Name, pStData[i].Kor, pStData[i].Eng,
 				pStData[i].Math, pStData[i].Society, pStData[i].Science);
 			return i;
 		}
 	}
-	printf("해당 이름을 찾지 못하였습니다.");
-	return MemberNumber;
+	printf("해당 이름을 찾지 못하였습니다.\n");
+	return 0;
 }
 void F_Modify()
 {
 	
 	
-	printf("수정할 대상을 검색합니다.");
+	printf("수정할 대상을 검색합니다.\n");
 	int i = F_Search();
-	printf("수정을 시작합니다.");
+	printf("수정을 시작합니다.\n");
 	printf("이름:");
-	scanf("%s", &pStData[i].Name);
+	scanf("%s", pStData[i].Name);			//& 제거 ㄱㅊ?
 	printf("국어점수 :");
 	scanf("%d", &pStData[i].Kor);
 	printf("영어점수 :");
@@ -181,12 +195,12 @@ void F_Modify()
 	scanf("%d", &pStData[i].Society);
 	printf("과학점수 :");
 	scanf("%d", &pStData[i].Science);
-	printf("\n-수정완료.-");
+	printf("\n-수정완료.-\n");
 }
 
-void F_SortScoreKor()
+void F_SortScoreKor()			////sort 교환을 변수 하나만 하는게 아니라 줄 통째로 교환 해야함.
 {
-	int Tmp;
+	StudyData TMP;
 	printf("점수를 내림차순으로 정렬");
 	for (int i = 0; i < MemberNumber-1; ++i)
 	{
@@ -194,16 +208,16 @@ void F_SortScoreKor()
 		{
 			if(pStData[i].Kor < pStData[j].Kor)
 			{ 
-				Tmp = pStData[i].Kor;
-				pStData[i].Kor = pStData[j].Kor;
-				pStData[j].Kor = Tmp;
+				TMP = pStData[i];
+				pStData[i] = pStData[j];
+				pStData[j] = TMP;
 			}
 		}
 	}
-}
+}              
 void F_SortScoreEng	()
 {
-	int Tmp;
+	StudyData TMP;
 	printf("점수를 내림차순으로 정렬");
 	for (int i = 0; i < MemberNumber - 1; ++i)
 	{
@@ -211,16 +225,16 @@ void F_SortScoreEng	()
 		{
 			if (pStData[i].Eng < pStData[j].Eng)
 			{
-				Tmp = pStData[i].Eng;
-				pStData[i].Eng = pStData[j].Eng;
-				pStData[j].Eng = Tmp;
+				TMP = pStData[i];
+				pStData[i] = pStData[j];
+				pStData[j] = TMP;
 			}
 		}
 	}
 }
 void F_SortScoreMath()
 {
-	int Tmp;
+	StudyData TMP;
 	printf("점수를 내림차순으로 정렬");
 	for (int i = 0; i < MemberNumber - 1; ++i)
 	{
@@ -228,16 +242,16 @@ void F_SortScoreMath()
 		{
 			if (pStData[i].Math < pStData[j].Math)
 			{
-				Tmp = pStData[i].Math;
-				pStData[i].Math = pStData[j].Math;
-				pStData[j].Math = Tmp;
+				TMP = pStData[i];
+				pStData[i] = pStData[j];
+				pStData[j] = TMP;
 			}
 		}
 	}
 }
 void F_SortScoreSoci()
 {
-	int Tmp;
+	StudyData TMP;
 	printf("점수를 내림차순으로 정렬");
 	for (int i = 0; i < MemberNumber - 1; ++i)
 	{
@@ -245,16 +259,16 @@ void F_SortScoreSoci()
 		{
 			if (pStData[i].Society < pStData[j].Society)
 			{
-				Tmp = pStData[i].Society;
-				pStData[i].Society = pStData[j].Society;
-				pStData[j].Society = Tmp;
+				TMP = pStData[i];
+				pStData[i] = pStData[j];
+				pStData[j] = TMP;
 			}
 		}
 	}
 }
 void F_SortScoreSci()
 {
-	int Tmp;
+	StudyData TMP;
 	printf("점수를 내림차순으로 정렬");
 	for (int i = 0; i < MemberNumber - 1; ++i)
 	{
@@ -262,15 +276,16 @@ void F_SortScoreSci()
 		{
 			if (pStData[i].Society < pStData[j].Society)
 			{
-				Tmp = pStData[i].Society;
-				pStData[i].Society = pStData[j].Society;
-				pStData[j].Society = Tmp;
+				TMP = pStData[i];
+				pStData[i] = pStData[j];
+				pStData[j] = TMP;
 			}
 		}
 	}
 }
 void F_SortNameDown()
 {
+	StudyData TMP;
 	printf("이름을 내림차순으로 정렬");
 	for (int i = 0; i < MemberNumber - 1; ++i)
 	{
@@ -278,27 +293,26 @@ void F_SortNameDown()
 		{
 			if (strcmp(pStData[i].Name, pStData[j].Name) < 0)
 			{
-				char* TmpName = 0;
-				strcpy(TmpName, pStData[i].Name);
-				strcpy(pStData[i].Name, pStData[j].Name);
-				strcpy(pStData[j].Name, TmpName);
+				TMP = pStData[i];
+				pStData[i] = pStData[j];
+				pStData[j] = TMP;
 			}
 		}
 	}
 }
 void F_SortNameUp() 
 {
+	StudyData TMP;
 	printf("이름을 올림차순으로 정렬");
 	for (int i = 0; i < MemberNumber - 1; ++i)
 	{
-		for (int j = i + 1; j < MemberNumber; ++j)
+		for (int j = i + 1; j <= MemberNumber; ++j)
 		{
 			if (strcmp(pStData[i].Name, pStData[j].Name) > 0)
 			{
-				char* TmpName = 0;
-				strcpy(TmpName, pStData[i].Name);
-				strcpy(pStData[i].Name, pStData[j].Name);
-				strcpy(pStData[j].Name, TmpName);
+				TMP = pStData[i];
+				pStData[i] = pStData[j];
+				pStData[j] = TMP;
 			}
 		}
 	}
@@ -310,6 +324,8 @@ void F_Delete()
 	int i = 0;
 	printf("삭제할 사람을 검색합니다.");
 	i=F_Search();
+	if (i == NULL)return;
+
 	printf("%s의 정보를 삭제할까요? y/n", pStData[i].Name);
 	if ( ('n' || 'N')==getchar())
 	{
@@ -320,6 +336,7 @@ void F_Delete()
 	F_SortNameDown();
 	fseek(fp, 0, SEEK_SET);
 	fprintf(fp, "%d\n", --MemberNumber);
+	F_Save();
 }
 
 void F_Sort()
@@ -382,7 +399,7 @@ void ShowMain()
 	int select=1;
 	while (select)
 	{
-		
+		//system("cls");
 		printf("========================	성	적	관	리	================== FILE_Name : %s\n", UsingFileName);
 		printf("| 1:추가 | 2:수정 | 3:정렬 | 4:검색 | 5:삭제 | 6:저장 | 7:불러오기 | 8:학생정보 | 9:종료 |\n");
 		printf("명령어 : ");
@@ -421,12 +438,9 @@ void ShowMain()
 			break;
 		}
 		case Select::LOAD:
-		{	if (fp != nullptr)
-		{
-			fclose(fp);
-		}
-		memset(UsingFileName, 0, sizeof(UsingFileName));
-			
+		{	
+		memset(UsingFileName, 0, sizeof(UsingFileName)); 
+		
 			F_Load();
 			break;
 		}
