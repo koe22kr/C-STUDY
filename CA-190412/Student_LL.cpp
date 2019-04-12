@@ -24,42 +24,47 @@ struct ll_StudentL
 	ll_StudentL* pNext;
 };
 
-ll_StudentL* g_p_LLHead = 0;
-ll_StudentL* g_p_LLTail = 0;
+ll_StudentL* g_p_LLHead = NULL;
+ll_StudentL* g_p_LLTail = NULL;
 
 ll_StudentL* NewStudentPtr_inback()
 {
-	ll_StudentL* pNewstudent = (ll_StudentL*)malloc(sizeof(ll_StudentL));
-	memset(pNewstudent, 0, sizeof(ll_StudentL));
+	ll_StudentL* TMP;
+	g_p_LLTail = (ll_StudentL*)malloc(sizeof(ll_StudentL));
+	memset(g_p_LLTail, 0, sizeof(ll_StudentL));
 	
 	if (g_p_LLHead == NULL)
 	{
-		g_p_LLHead = pNewstudent;
-		g_p_LLTail = pNewstudent;
+		g_p_LLHead = g_p_LLTail;
 	}
 	else
 	{
-		g_p_LLTail->pNext = pNewstudent;
-	
+		TMP = g_p_LLHead;
+		while (TMP->pNext != NULL)
+		{
+
+			TMP = TMP->pNext;
+		}
+		TMP->pNext = g_p_LLTail;
 	}
-	return pNewstudent;
+	return g_p_LLTail;
 }
 void AddNewStudent()
 {
-	ll_StudentL* pAddstudent = NewStudentPtr_inback();
+	ll_StudentL* g_p_LLTail = NewStudentPtr_inback();
 	printf("새로운 학생 데이터를 입력합니다.");
 	printf("이름 :");
-	scanf("%s", pAddstudent->Name);
+	scanf("%s", &g_p_LLTail->Name);
 	printf("국어 :");
-	scanf("%s", pAddstudent->Kor);
+	scanf("%d", &g_p_LLTail->Kor);
 	printf("영어 :");
-	scanf("%s", pAddstudent->Eng);
+	scanf("%d", &g_p_LLTail->Eng);
 	printf("수학 :");
-	scanf("%s", pAddstudent->Math);
+	scanf("%d", &g_p_LLTail->Math);
 	printf("사회 :");
-	scanf("%s", pAddstudent->Society);
+	scanf("%d", &g_p_LLTail->Society);
 	printf("과학 :");
-	scanf("%s", pAddstudent->Science);
+	scanf("%d", &g_p_LLTail->Science);
 }
 void Free_allMemory()
 {
@@ -78,7 +83,7 @@ void ShowStudentInfo()
 	ll_StudentL* TMP;
 	TMP = g_p_LLHead;
 		printf("|  이름  |  국어  |  영어  |  수학  |  사회  |  과학  |\n");
-		while(TMP->pNext!=NULL)
+		while(TMP!=NULL)
 		{
 			printf("  %s  |  %4d  |  %4d  |  %4d  |  %4d  |  %4d  |  \n",   TMP->Name, TMP->Kor,	 TMP->Eng,
 																			TMP->Math, TMP->Society, TMP->Science);
@@ -95,7 +100,8 @@ void SaveStudentData()
 	while (TMP != NULL)
 	{
 		
-		fprintf(fp, );
+		fprintf(fp, "%s %d %d %d %d %d",    TMP->Name, TMP->Kor, TMP->Eng,
+											TMP->Math, TMP->Society, TMP->Science);
 		TMP = TMP->pNext;
 	}
 
@@ -106,36 +112,69 @@ void LoadStudentData()
 	{
 		Free_allMemory();
 	}
-	int iMembers;
+	int iMembers=0;
 	FILE* fp;
 	fp = fopen("test.txt", "rt");					//편의상 파일이름은 입력받지 않는다.
-	fscanf(fp, "%d\n", iMembers);
+	if (fp == NULL) 
+	{
+		printf("fp의 주소가 NULL입니다.");
+	}
+	fscanf(fp, "%d", &iMembers);
 	for (int i = 0; i < iMembers; ++i)
 	{
 		ll_StudentL* pLoadstudent = NewStudentPtr_inback();
-		fscanf(fp, "%s %d %d %d %d %d%*c", pLoadstudent->Name, pLoadstudent->Kor,       pLoadstudent->Eng, 
-										  pLoadstudent->Math, pLoadstudent->Society,	 pLoadstudent->Science);
+		fscanf(fp, "%s %d %d %d %d %d%*c", &pLoadstudent->Name, &pLoadstudent->Kor,       &pLoadstudent->Eng, 
+										  &pLoadstudent->Math, &pLoadstudent->Society,	 &pLoadstudent->Science);
 	}
 	fclose(fp);
 	printf("%d명의 데이터 로드. 아무키나 입력하면 돌아갑니다.", iMembers);
-	_getch;
+	puts("");
+	_getch();
 }
 void InterFace()
-{	
-	int select;
-	switch (select)  //MODIFY, SORT, SEARCH, DELETE, SAVE, LOAD, INFO, EXIT = 0
+{
+	int select = 1;
+	while (select)
 	{
-	case 1:ADD;             //NewStudentPtr_inback + 입력 으로 구성하기.
-	case 2:MODIFY;
-	case 3:SORT;
-	case 4:SEARCH;
-	case 5:DELETE;
-	case 6:SAVE;
-	case 7:LOAD;		//_getch 사용
-	case 8:INFO;		//_getch 사용
-	case 0:EXIT;
-	default:
-		break;
+		//system("cls");
+		printf("========================	성	적	관	리	================== FILE_Name : \n");
+		printf("| 1:추가  | 2:수정  | 3:정렬  | 4:검색  | 5:삭제  | 6:저장  | 7:불러오기  | 8:학생정보  | 0:종료  |\n");
+		printf("명령어 : ");
+		scanf("%d%*c", &select);
+
+
+
+
+		switch (select)  //MODIFY, SORT, SEARCH, DELETE, SAVE, LOAD, INFO, EXIT = 0
+		{
+		case 1:ADD;             //NewStudentPtr_inback + 입력 으로 구성하기.
+		{
+			AddNewStudent();
+			break;
+		}
+		case 2:MODIFY;
+		case 3:SORT;
+		case 4:SEARCH;
+		case 5:DELETE;
+		case 6:SAVE;
+		{
+			SaveStudentData();
+			break;
+		}
+		case 7:LOAD;		//_getch 사용
+		{
+			LoadStudentData();
+			break;
+		}
+		case 8:INFO;		//_getch 사용
+		{
+			ShowStudentInfo();
+			break;
+		}
+		case 0:EXIT;
+		default:
+			break;
+		}
 	}
 }
 
@@ -147,5 +186,7 @@ int main (void)
 	//
 	//
 	//
-
+	InterFace();
+	_getch();
+	return 0;
 }
