@@ -324,7 +324,7 @@ void F_Delete()
 	if (i == NULL)return;
 
 	printf("%s의 정보를 삭제할까요? y/n", pStData[i].Name);
-	if (('n' || 'N') == getchar())
+;	if (('n' || 'N') == getchar())
 	{
 		return;
 	}
