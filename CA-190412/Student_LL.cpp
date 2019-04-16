@@ -32,6 +32,8 @@ ll_StudentL* g_pLHead = new ll_StudentL;
 ll_StudentL* g_pLTail = new ll_StudentL;
 
 
+void DeleteStudentData(ll_StudentL* delpoint);
+void SwapStudentData_without_pre_next(ll_StudentL* P1, ll_StudentL* P2);
 ll_StudentL* NewStudentPtr_inLast()
 {
 
@@ -46,7 +48,7 @@ ll_StudentL* NewStudentPtr_inLast()
 	newSt->pPrev = TMP;
 	
 
-	return g_pLTail;   //헤드 넥스트값
+	return newSt;   //헤드 넥스트값
 }
 
 
@@ -83,12 +85,13 @@ void Free_allMemoryforHead(ll_StudentL* HEAD)
 {
 	ER_CHECK_NOT_OPEN_DATA();
 	
-	ll_StudentL* TMP;
-	ll_StudentL* DelHead= HEAD->pNext;
-	while (DelHead != g_pLTail)//
+	
+	ll_StudentL* DelHead;
+	while (g_pLHead->pNext != g_pLTail)//
 	{
-		TMP = DelHead;
-		DeleteStudentData(TMP);		
+		DelHead = HEAD->pNext;
+		DeleteStudentData(DelHead);		
+		
 	}	
 	printf("모든 메모리 반환");
 	HEAD->pNext = NULL;
@@ -100,9 +103,9 @@ void DeleteStudentData(ll_StudentL* delpoint)
 	TMPpre = delpoint->pPrev;
 	TMPnext = delpoint->pNext;
 
-	TMPnext = TMPpre->pNext;
-	TMPpre = TMPnext->pPrev;
-	delete(delpoint);
+	TMPnext->pPrev = TMPpre;
+	TMPpre->pNext = TMPnext;
+	delete delpoint;
 
 }
 void ShowStudentInfo()
@@ -228,62 +231,68 @@ void ModySTudentData(ll_StudentL* Target)
 	find->Total = (find->Kor + find->Eng + find->Math + find->Society + find->Science);
 	
 }
-void SwapStudentData_without_pre_next(ll_StudentL* P1, ll_StudentL* P2)
-{
-	ll_StudentL* TMP;
-	memcpy(TMP->Name, P1->Name, sizeof(ll_StudentL));
-	TMP->Kor = P1->Kor;
-	TMP->Eng = P1->Eng;
-	TMP->Math = P1->Math;
-	TMP->Society = P1->Society;
-	TMP->Science = P1->Science;
 
-	memcpy(P1->Name, P2->Name, sizeof(ll_StudentL));
-	P1->Kor = P2->Kor;
-	P1->Eng = P2->Eng;
-	P1->Math = P2->Math;
-	P1->Society = P2->Society;
-	P1->Science = P2->Science;
-
-	memcpy(P1->Name, TMP->Name, sizeof(ll_StudentL));
-	P2->Kor = TMP->Kor;
-	P2->Eng = TMP->Eng;
-	P2->Math = TMP->Math;
-	P2->Society = TMP->Society;
-	P2->Science = TMP->Science;
-
-}
 void SortStudentUP()			//2중 연결리스트 하면 편한데 그렇게 해야할까아아아?  보류 수정 만들고 나서 하면 수정 대입하면 될듯.
 {
 	ER_CHECK_NOT_OPEN_DATA();
 	
-	ll_StudentL* TMPi = g_pLHead->pNext;
+	
 	ll_StudentL* upper = nullptr;
-	for (; TMPi != g_pLTail; TMPi = TMPi->pNext)
+	for (ll_StudentL* TMPi = g_pLHead->pNext; TMPi != g_pLTail; TMPi = TMPi->pNext)
 	{
 		upper = TMPi;
 
-		for (; TMPi != g_pLTail; TMPi = TMPi->pNext)
+		for (ll_StudentL* TMPj = TMPi->pNext; TMPj != g_pLTail; TMPj= TMPj->pNext)
 		{
-			if (upper->Total < TMPi->Total)
-				upper = TMPi;
+			if (upper->Total < TMPj->Total)
+				upper = TMPj;
 		}
+		int b = 0;
 		
-		SwapStudentData_without_pre_next(TMPi,upper);
+		SwapStudentData_without_pre_next(upper,TMPi);
 		
 	}
 	ShowStudentInfo();
 }
 
+void SwapStudentData_without_pre_next(ll_StudentL* ppre, ll_StudentL* pnext)
+{
+	
+	ll_StudentL* TMP = new ll_StudentL;
+	strcpy(TMP->Name, ppre->Name);
+	TMP->Kor = ppre->Kor;
+	TMP->Eng = ppre->Eng;
+	TMP->Math = ppre->Math;
+	TMP->Society = ppre->Society;
+	TMP->Science = ppre->Science;
+	TMP->Total = ppre->Total;
+
+	strcpy(ppre->Name, pnext->Name);
+	ppre->Kor = pnext->Kor;
+	ppre->Eng = pnext->Eng;
+	ppre->Math = pnext->Math;
+	ppre->Society = pnext->Society;
+	ppre->Science = pnext->Science;
+	ppre->Total = pnext->Total;
+
+	strcpy(pnext->Name, TMP->Name);
+	pnext->Kor = TMP->Kor;
+	pnext->Eng = TMP->Eng;
+	pnext->Math = TMP->Math;
+	pnext->Society = TMP->Society;
+	pnext->Science = TMP->Science;
+	pnext->Total = TMP->Total;
+
+	delete TMP;
+}
 void InterFace()
 {
 	int select = 1;
 	while (select)
 	{
 		//system("cls");
-		printf("========================	성	적	관	리	================== FILE_Name : \n");
+		printf("========================	성	적	관	리	======================================\n ");
 		printf("| 1:추가  | 2:수정  | 3:정렬  | 4:검색  | 5:삭제  | 6:저장  | 7:불러오기  | 8:학생정보  | 0:종료  |\n");
-		ER_CHECK_NOT_OPEN_DATA();
 		printf("명령어 : ");
 		scanf("%d%*c", &select);
 
@@ -335,19 +344,20 @@ void Init_Head_Tail()
 }
 int main (void)
 {
-	memset(g_pLHead, 0, sizeof(ll_StudentL));   //헤드값에 무언가 들어가는 시기.
+	int a = sizeof(ll_StudentL::Name);
+	//헤드값에 무언가 들어가는 시기.
 	//NewStudent		Free_allMemory    ////free_allmemory=종료 기동
 	//
 	//load file,save file.
 	//init 함수로 묶기.
-	Init_Head_Tail;
+	Init_Head_Tail();
 
 
 	InterFace();
 	Free_allMemoryforHead(g_pLHead);
 	
-	delete(g_pLHead);
-	delete(g_pLTail);
+	delete g_pLHead;
+	delete g_pLTail;
 
 	_getch();
 	return 0;
