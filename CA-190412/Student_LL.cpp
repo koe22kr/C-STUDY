@@ -6,7 +6,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-
+using namespace std;
 enum Select
 {
 	ADD = 1, MODIFY, SORT, SEARCH, DELETE, SAVE, LOAD, INFO, EXIT = 0
@@ -21,116 +21,260 @@ struct ll_StudentL
 	int Math;
 	int Society;
 	int Science;
-	ll_StudentL* pNext;
+	int Total;
+	int SortFLAG = 1;
+	ll_StudentL* pNext=NULL;
+	ll_StudentL* pPrev = NULL;
+
 };
+int MemNum = 0;
+ll_StudentL* g_pLHead = new ll_StudentL;
+ll_StudentL* g_pLTail = new ll_StudentL;
 
-ll_StudentL* g_p_LLHead = NULL;
-ll_StudentL* g_p_LLTail = NULL;
 
-ll_StudentL* NewStudentPtr_inback()
+ll_StudentL* NewStudentPtr_inLast()
 {
-	ll_StudentL* TMP;
-	g_p_LLTail = (ll_StudentL*)malloc(sizeof(ll_StudentL));
-	memset(g_p_LLTail, 0, sizeof(ll_StudentL));
-	
-	if (g_p_LLHead == NULL)
-	{
-		g_p_LLHead = g_p_LLTail;
-	}
-	else
-	{
-		TMP = g_p_LLHead;
-		while (TMP->pNext != NULL)
-		{
 
-			TMP = TMP->pNext;
-		}
-		TMP->pNext = g_p_LLTail;
+	ll_StudentL* TMP;
+	ll_StudentL* newSt = new ll_StudentL;
+	TMP = g_pLTail->pPrev;
+
+	g_pLTail->pPrev = newSt;
+	newSt->pNext = g_pLTail;
+	
+	TMP->pNext = newSt;
+	newSt->pPrev = TMP;
+	
+
+	return g_pLTail;   //헤드 넥스트값
+}
+
+
+void ER_CHECK_NOT_OPEN_DATA()//추가,로드 말고 다 이걸 불러오기. 학생데이터 없어도 기능하는것 빼고 다 달기.
+{
+	if (g_pLHead->pNext == g_pLTail)
+	{
+		printf("ER:학생정보가 없습니다.(head의next가 tail입니다.");
+		return;
 	}
-	return g_p_LLTail;
 }
 void AddNewStudent()
 {
-	ll_StudentL* g_p_LLTail = NewStudentPtr_inback();
+	ll_StudentL* newStatus = NewStudentPtr_inLast();
 	printf("새로운 학생 데이터를 입력합니다.");
 	printf("이름 :");
-	scanf("%s", &g_p_LLTail->Name);
+	scanf("%s", &newStatus->Name);
 	printf("국어 :");
-	scanf("%d", &g_p_LLTail->Kor);
+	scanf("%d", &newStatus->Kor);
 	printf("영어 :");
-	scanf("%d", &g_p_LLTail->Eng);
+	scanf("%d", &newStatus->Eng);
 	printf("수학 :");
-	scanf("%d", &g_p_LLTail->Math);
+	scanf("%d", &newStatus->Math);
 	printf("사회 :");
-	scanf("%d", &g_p_LLTail->Society);
+	scanf("%d", &newStatus->Society);
 	printf("과학 :");
-	scanf("%d", &g_p_LLTail->Science);
+	scanf("%d", &newStatus->Science);
+	newStatus->Total = (newStatus->Kor + newStatus->Eng + newStatus->Math + newStatus->Society + newStatus->Science);
+	newStatus->SortFLAG = 1;
+	MemNum++;
 }
-void Free_allMemory()
+
+void Free_allMemoryforHead(ll_StudentL* HEAD)
 {
+	ER_CHECK_NOT_OPEN_DATA();
+	
 	ll_StudentL* TMP;
-	while (g_p_LLHead != NULL)
+	ll_StudentL* DelHead= HEAD->pNext;
+	while (DelHead != g_pLTail)//
 	{
-		TMP = g_p_LLHead;
-		g_p_LLHead = g_p_LLHead->pNext;
-		free(TMP);
+		TMP = DelHead;
+		DeleteStudentData(TMP);		
 	}	
 	printf("모든 메모리 반환");
+	HEAD->pNext = NULL;
+}
+void DeleteStudentData(ll_StudentL* delpoint)
+{
+	ll_StudentL* TMPpre;
+	ll_StudentL* TMPnext;
+	TMPpre = delpoint->pPrev;
+	TMPnext = delpoint->pNext;
+
+	TMPnext = TMPpre->pNext;
+	TMPpre = TMPnext->pPrev;
+	delete(delpoint);
+
 }
 void ShowStudentInfo()
 {
-	if (g_p_LLHead == NULL)return;
+	ER_CHECK_NOT_OPEN_DATA();
+
 	ll_StudentL* TMP;
-	TMP = g_p_LLHead;
-		printf("|  이름  |  국어  |  영어  |  수학  |  사회  |  과학  |\n");
-		while(TMP!=NULL)
+	TMP = g_pLHead->pNext;
+		printf("|  이름  |  국어  |  영어  |  수학  |  사회  |  과학  |  총점  |\n");
+		while(TMP!=g_pLTail)
 		{
-			printf("  %s  |  %4d  |  %4d  |  %4d  |  %4d  |  %4d  |  \n",   TMP->Name, TMP->Kor,	 TMP->Eng,
-																			TMP->Math, TMP->Society, TMP->Science);
+			printf("  %s  |  %4d  |  %4d  |  %4d  |  %4d  |  %4d  |  %4d  |  \n",   TMP->Name, TMP->Kor,	 TMP->Eng,
+																			TMP->Math, TMP->Society, TMP->Science, TMP->Total);
 			TMP = TMP->pNext;
 		}
-		printf("아무키나 입력하면 돌아갑니다.");
-		_getch;
+		printf("아무키나 입력하면 돌아갑니다.\n");
+		_getch();
 	}
 void SaveStudentData()
 {
-	ll_StudentL* TMP = g_p_LLHead;
+	ER_CHECK_NOT_OPEN_DATA();
+
+	ll_StudentL* TMP = g_pLHead->pNext;
 	FILE*fp;
 	fp = fopen("test.txt", "wt");
-	while (TMP != NULL)
+	fprintf(fp, "%d\n", MemNum);
+	while (TMP != g_pLTail)
 	{
-		
-		fprintf(fp, "%s %d %d %d %d %d",    TMP->Name, TMP->Kor, TMP->Eng,
-											TMP->Math, TMP->Society, TMP->Science);
+		fprintf(fp, "%s %d %d %d %d %d %d\n",    TMP->Name, TMP->Kor, TMP->Eng,
+												TMP->Math, TMP->Society, TMP->Science,
+												TMP->Kor + TMP->Eng + TMP->Math + TMP->Society + TMP->Science);
 		TMP = TMP->pNext;
 	}
-
+	fclose(fp);
 }
 void LoadStudentData()
 {	
-	if (g_p_LLHead != NULL)
+	if (g_pLHead->pNext != g_pLTail)
 	{
-		Free_allMemory();
+		Free_allMemoryforHead(g_pLHead);
 	}
-	int iMembers=0;
 	FILE* fp;
 	fp = fopen("test.txt", "rt");					//편의상 파일이름은 입력받지 않는다.
 	if (fp == NULL) 
 	{
-		printf("fp의 주소가 NULL입니다.");
+		printf("fp의 주소가 NULL. 파일을 열지 못하였습니다.");
 	}
-	fscanf(fp, "%d", &iMembers);
-	for (int i = 0; i < iMembers; ++i)
-	{
-		ll_StudentL* pLoadstudent = NewStudentPtr_inback();
-		fscanf(fp, "%s %d %d %d %d %d%*c", &pLoadstudent->Name, &pLoadstudent->Kor,       &pLoadstudent->Eng, 
-										  &pLoadstudent->Math, &pLoadstudent->Society,	 &pLoadstudent->Science);
+	fscanf(fp, "%d%*c", &MemNum);
+	for (int i = 0; i < MemNum; i++)
+	{	
+		
+		ll_StudentL* pLoadstudent = NewStudentPtr_inLast();
+		fscanf(fp,"%s %d %d %d %d %d %d",  &pLoadstudent->Name, &pLoadstudent->Kor, &pLoadstudent->Eng,
+											&pLoadstudent->Math, &pLoadstudent->Society, &pLoadstudent->Science, &pLoadstudent->Total);
+		
+		
+		pLoadstudent->SortFLAG = 1;
+		//pLoadstudent->pNext = NULL;
+
 	}
 	fclose(fp);
-	printf("%d명의 데이터 로드. 아무키나 입력하면 돌아갑니다.", iMembers);
+	//printf("%d명의 데이터 로드. 아무키나 입력하면 돌아갑니다.\n",);
 	puts("");
 	_getch();
 }
+ll_StudentL* SearchStudent_byname()
+{
+	ER_CHECK_NOT_OPEN_DATA();
+
+	ll_StudentL* TMP = g_pLHead->pNext;
+	char Name_for_search[30] = { 0 };
+	if (TMP == g_pLTail)
+	{
+		printf("데이터가 존재하지 않습니다.");
+		return 0;
+	}
+	while (TMP != g_pLTail)
+	{
+		if (strstr(TMP->Name, Name_for_search) != NULL)
+		{
+			return TMP;
+		}
+		
+		TMP = TMP->pNext;
+		
+	}
+	printf("|  이름  |  국어  |  영어  |  수학  |  사회  |  과학  |  총점  |\n");
+	printf("|  %s  |  %4d  |  %4d  |  %4d  |  %4d  |  %4d  |  %4d  |  \n",   TMP->Name, TMP->Kor, TMP->Eng,
+																			TMP->Math, TMP->Society, TMP->Science, TMP->Total);
+	return TMP;
+}
+//ll_StudentL* SearchStudentUP_Total()
+//{
+//
+//	ll_StudentL* TMP = g_pLHead;
+//	if (g_pLHead->pNext == NULL) printf("학생이 존재하지 않습니다.");
+//	//if (TMP->pNext == NULL)
+//	
+//	while (TMP != NULL)
+//	{
+//
+//		TMP = TMP->pNext;
+//	}
+//}
+void ModySTudentData(ll_StudentL* Target)
+{
+	ll_StudentL* find=SearchStudent_byname();
+	if (find == g_pLTail)return;
+	printf("  %s  |  %4d  |  %4d  |  %4d  |  %4d  |  %4d  |  %4d  |  \n",   find->Name, find->Kor, find->Eng,
+																			find->Math, find->Society, find->Science, find->Total);
+	printf("이름 :");
+	scanf("%s", &find->Name);
+	printf("국어 :");
+	scanf("%d", &find->Kor);
+	printf("영어 :");
+	scanf("%d", &find->Eng);
+	printf("수학 :");
+	scanf("%d", &find->Math);
+	printf("사회 :");
+	scanf("%d", &find->Society);
+	printf("과학 :");
+	scanf("%d", &find->Science);
+	find->Total = (find->Kor + find->Eng + find->Math + find->Society + find->Science);
+	
+}
+void SwapStudentData_without_pre_next(ll_StudentL* P1, ll_StudentL* P2)
+{
+	ll_StudentL* TMP;
+	memcpy(TMP->Name, P1->Name, sizeof(ll_StudentL));
+	TMP->Kor = P1->Kor;
+	TMP->Eng = P1->Eng;
+	TMP->Math = P1->Math;
+	TMP->Society = P1->Society;
+	TMP->Science = P1->Science;
+
+	memcpy(P1->Name, P2->Name, sizeof(ll_StudentL));
+	P1->Kor = P2->Kor;
+	P1->Eng = P2->Eng;
+	P1->Math = P2->Math;
+	P1->Society = P2->Society;
+	P1->Science = P2->Science;
+
+	memcpy(P1->Name, TMP->Name, sizeof(ll_StudentL));
+	P2->Kor = TMP->Kor;
+	P2->Eng = TMP->Eng;
+	P2->Math = TMP->Math;
+	P2->Society = TMP->Society;
+	P2->Science = TMP->Science;
+
+}
+void SortStudentUP()			//2중 연결리스트 하면 편한데 그렇게 해야할까아아아?  보류 수정 만들고 나서 하면 수정 대입하면 될듯.
+{
+	ER_CHECK_NOT_OPEN_DATA();
+	
+	ll_StudentL* TMPi = g_pLHead->pNext;
+	ll_StudentL* upper = nullptr;
+	for (; TMPi != g_pLTail; TMPi = TMPi->pNext)
+	{
+		upper = TMPi;
+
+		for (; TMPi != g_pLTail; TMPi = TMPi->pNext)
+		{
+			if (upper->Total < TMPi->Total)
+				upper = TMPi;
+		}
+		
+		SwapStudentData_without_pre_next(TMPi,upper);
+		
+	}
+	ShowStudentInfo();
+}
+
 void InterFace()
 {
 	int select = 1;
@@ -139,6 +283,7 @@ void InterFace()
 		//system("cls");
 		printf("========================	성	적	관	리	================== FILE_Name : \n");
 		printf("| 1:추가  | 2:수정  | 3:정렬  | 4:검색  | 5:삭제  | 6:저장  | 7:불러오기  | 8:학생정보  | 0:종료  |\n");
+		ER_CHECK_NOT_OPEN_DATA();
 		printf("명령어 : ");
 		scanf("%d%*c", &select);
 
@@ -154,6 +299,10 @@ void InterFace()
 		}
 		case 2:MODIFY;
 		case 3:SORT;
+		{
+			SortStudentUP();
+			break;
+		}
 		case 4:SEARCH;
 		case 5:DELETE;
 		case 6:SAVE;
@@ -177,16 +326,29 @@ void InterFace()
 		}
 	}
 }
-
+void Init_Head_Tail()
+{
+	memset(g_pLHead, 0, sizeof(ll_StudentL));
+	memset(g_pLTail, 0, sizeof(ll_StudentL));
+	g_pLHead->pNext = g_pLTail;
+	g_pLTail->pPrev = g_pLHead;
+}
 int main (void)
 {
+	memset(g_pLHead, 0, sizeof(ll_StudentL));   //헤드값에 무언가 들어가는 시기.
 	//NewStudent		Free_allMemory    ////free_allmemory=종료 기동
 	//
 	//load file,save file.
-	//
-	//
-	//
+	//init 함수로 묶기.
+	Init_Head_Tail;
+
+
 	InterFace();
+	Free_allMemoryforHead(g_pLHead);
+	
+	delete(g_pLHead);
+	delete(g_pLTail);
+
 	_getch();
 	return 0;
 }
