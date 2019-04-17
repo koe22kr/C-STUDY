@@ -1,6 +1,6 @@
 #include <iostream>
 #include <cstring>
-#ifdef on
+
 using namespace std;
 const int NAME_LEN = 20;
 void ShowMenu(void);
@@ -169,4 +169,3 @@ void ShowAllAccInfo()
 		cout << endl;
 	}
 }
-#endif

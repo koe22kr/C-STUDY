@@ -1,8 +1,12 @@
 #include <iostream>
 #include <cstring>
 #include <string>
-//#new
-#ifdef on
+
+
+//new
+
+
+
 const size_t name_len = 20;
 
 void ShowMenu();
@@ -165,4 +169,3 @@ void ShowAllAccInfo()
 		std::cout << "ภÜพื	   : " << accountarr[i].money << std::endl;
 	}
 }
-#endif

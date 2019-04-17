@@ -117,7 +117,6 @@
   <ItemGroup>
     <ClCompile Include="Bank.cpp" />
     <ClCompile Include="BankingSystemVer02.cpp" />
-    <ClCompile Include="so.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
