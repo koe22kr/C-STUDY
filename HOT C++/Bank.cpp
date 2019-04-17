@@ -1,7 +1,7 @@
 #include <iostream>
 #include <cstring>
 #include <string>
-
+//#new
 #ifdef on
 const size_t name_len = 20;
 
