@@ -15,13 +15,24 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Bank.cpp">
+    <ClInclude Include="Database.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="Employee.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="testDB.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
-    <ClCompile Include="BankingSystemVer02.cpp">
+    <ClCompile Include="..\Project2\Database.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
-    <ClCompile Include="so.cpp">
+    <ClCompile Include="..\Project2\Employee.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="UserInterface.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
   </ItemGroup>
