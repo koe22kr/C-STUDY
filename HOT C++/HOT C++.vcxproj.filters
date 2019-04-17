@@ -18,8 +18,5 @@
     <ClCompile Include="Bank.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
-    <ClCompile Include="BankingSystemVer02.cpp">
-      <Filter>소스 파일</Filter>
-    </ClCompile>
   </ItemGroup>
 </Project>
