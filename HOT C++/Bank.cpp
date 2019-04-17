@@ -1,39 +1,122 @@
 #include <iostream>
 #include <cstring>
 #include <string>
-
-
-//new
-
-
-
-const size_t name_len = 20;
-
-void ShowMenu();
-void MakeAccount();
-void DepositMoney();
-void WithdrawMoney();
-void ShowAllAccInfo();
-
-enum { MAKE = 1,DEPOSIT,WITHDRAW,INQUIRE,EXIT };
-       //만들기 입금    출금      조회   끝
+using namespace std;
 
 
 
 
 
-typedef struct
+//const size_t name_len = 20;
+//
+//void ShowMenu();
+//void MakeAccount();
+//void DepositMoney();
+//void WithdrawMoney();
+//void ShowAllAccInfo();
+//
+//enum { MAKE = 1,DEPOSIT,WITHDRAW,INQUIRE,EXIT };
+//       //만들기 입금    출금      조회   끝
+
+//typedef struct
+//{
+//	
+//	int bankid;
+//	int money;
+//	char name[name_len];
+//	
+//}Account;
+class thif
 {
-	
-	int bankid;
+private:
+	int level;
+	int works;
 	int money;
-	char name[name_len];
+public:
+	thif();
+	~thif();
+	thif& working()
+	{
+		money += level * 10;
+		return *this;
+	}
+
+
+};
+
+thif::thif()
+{
+}
+
+thif::~thif()
+{
+}
+
+
+class Account
+{
+private:
+	int money;
+	int id;
+	char* name;
+	friend class thif;
+public:
+	Account(char inid, char* inname, int inmoney)
+		:id(inid), money(inmoney)
+	{
+		name = new char[strlen(inname) + 1];
+		strcpy(name, inname);
+	}
+	Account(const Account &ref)
+		:id(ref.id), money(ref.money)
+	{
+		name = new char[strlen(ref.name) + 1];
+		strcpy(name, ref.name);
+	}
+	~Account()
+	{
+		delete name;
+	}
+	int getid()
+	{
+		return id;
+	}
+	int getmoney()
+	{
+		return money;
+	}
+	char* getname()
+	{
+		return name;
+	}
+	void deposite(int inmoney)
+	{
+		money += inmoney;
+		cout << "입금완료" << endl;
+	}
+	void withdraw(int outmoney)
+	{
+		if (outmoney > money)
+		{
+			cout << "잔액부족" << endl;
+		}
+		money -= outmoney;
+		cout << "출금완료" << endl;
+	}
+	void showaccinfo()
+	{
+		cout << "id : " << id << endl;
+		cout << "이름 : " << name << endl;
+		cout << "잔액 : " << money << endl;
+		
+	}
+
+};
+
 	
-}Account;
+	
 
 
-Account accountarr[100];
-int accountnumber=0;
 
 
 
