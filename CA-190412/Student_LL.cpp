@@ -1,4 +1,4 @@
-#define _CRT_SECURE_NO_WARNINGS 
+#define _CRT_SECdURE_NO_WARNINGS 
 
 #include <iostream>
 #include<conio.h>
@@ -31,7 +31,7 @@ int MemNum = 0;
 ll_StudentL* g_pLHead = new ll_StudentL;
 ll_StudentL* g_pLTail = new ll_StudentL;
 
-bool SortIncorDec(int up_or_down, ll_StudentL* Target, ll_StudentL* TMPj);
+bool SortIncorDec(bool up_or_down, ll_StudentL* Target, ll_StudentL* TMPj);
 
 void DeleteStudentData(ll_StudentL* delpoint);
 void SwapStudentData_without_pre_next(ll_StudentL* P1, ll_StudentL* P2);
@@ -47,7 +47,7 @@ ll_StudentL* NewStudentPtr_inLast()
 	
 	TMP->pNext = newSt;
 	newSt->pPrev = TMP;
-	
+
 
 	return newSt;   //헤드 넥스트값
 }
