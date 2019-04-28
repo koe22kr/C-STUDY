@@ -3,6 +3,6 @@
 class Tstudent
 {
 public:
-	int Index;
+	int index;
 	int Score;
 };

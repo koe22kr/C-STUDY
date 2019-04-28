@@ -1,4 +1,5 @@
-#define _CRT_SECdURE_NO_WARNINGS 
+#define _CRT_SECURE_NO_WARNINGS
+
 
 #include <iostream>
 #include<conio.h>
@@ -362,7 +363,7 @@ void InterFace()
 		printf("¸í·É¾î : ");
 		scanf("%d%*c", &select);
 
-
+	
 
 
 		switch (select)  //

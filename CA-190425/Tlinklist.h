@@ -35,7 +35,7 @@ Tnode<T>* Tlinklist<T>::search_byindex(int inindex)
 	Tnode<T>* temp = m_Head->m_next;
 	for (int i = 0; i < index; i++)
 	{temp->m_data
-		if (temp->m_data.Index == inindex)
+		if (temp->m_data.index == inindex)
 		{
 			return temp;
 		}
@@ -103,7 +103,7 @@ Tnode<T>*  Tlinklist<T>::AddLink()
 	index++;
 	
 	//////////////////////////////// 임시 값입력
-	Newnode->m_data.Index = index;
+	Newnode->m_data.index = index;
 	Newnode->m_data.Score = 10 + index;
 	//////////////
 	return Newnode;
