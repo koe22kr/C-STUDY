@@ -20,8 +20,8 @@
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>15.0</VCProjectVersion>
-    <ProjectGuid>{089128EB-8FC2-45D1-A708-9729107714AE}</ProjectGuid>
-    <RootNamespace>CA190427</RootNamespace>
+    <ProjectGuid>{9FC2F72A-6BE6-46DB-B244-831AC2AA47B4}</ProjectGuid>
+    <RootNamespace>CA190429</RootNamespace>
     <WindowsTargetPlatformVersion>10.0.17763.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
@@ -69,14 +69,15 @@
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
-  <PropertyGroup />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <OutDir>../../output</OutDir>
+  </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>true</ConformanceMode>
-      <PreprocessorDefinitions>_MBCS;%(PreprocessorDefinitions)_CRT_SECURE_NO_WARNINGS;</PreprocessorDefinitions>
     </ClCompile>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
@@ -117,15 +118,15 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="code.cpp" />
-    <ClCompile Include="TStudent.cpp" />
+    <ClCompile Include="GManager.cpp" />
+    <ClCompile Include="GStudent.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Mgr_T.h" />
-    <ClInclude Include="Std.h" />
-    <ClInclude Include="TFileio_T.h" />
-    <ClInclude Include="TLinklist.h" />
-    <ClInclude Include="TNode.h" />
-    <ClInclude Include="TStudent.h" />
+    <ClInclude Include="GLinklist.h" />
+    <ClInclude Include="GManager.h" />
+    <ClInclude Include="GNode.h" />
+    <ClInclude Include="GStd.h" />
+    <ClInclude Include="GStudent.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

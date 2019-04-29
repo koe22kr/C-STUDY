@@ -1,5 +1,5 @@
 #pragma once
-#define _CRT_SECdURE_NO_WARNINGS 
+ 
 #include <string>
 #include <iostream>
 #include <conio.h>

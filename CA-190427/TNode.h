@@ -1,5 +1,5 @@
 #pragma once
-#include "Tstudent.h"
+#include "TStudent.h"
 
 template <class T>
 class Tnode
@@ -8,7 +8,7 @@ public:
 	Tnode();
 	~Tnode();
 
-	T* m_data;
+	T m_data;
 
 	Tnode<T>* m_next;
 	Tnode<T>* m_prev;
@@ -24,15 +24,12 @@ void Tnode<T>::setnode()
 template <class T>
 Tnode<T>::Tnode()
 {
-	m_data = new T;
-
-	
-
+	m_next = 0;
+	m_prev = 0;
 }
 
 template <class T>
 Tnode<T>::~Tnode()
 {
-	delete m_data;
-
+	cout << "~Tnode" << endl;
 }

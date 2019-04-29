@@ -1,6 +1,6 @@
 #pragma once
 
-#include "TFileio.h"
+#include "TFileio_T.h"
 
 template<class T>
 class Mgr
@@ -9,27 +9,30 @@ public:
 	Mgr();
 	~Mgr();
 	
-	Tlinklist<T>* obj_link;
+	TLinklist<T>* obj_link;
 	TFileio<T>* obj_fileio;
 
-	void ShowStudentInfo();
+	void StudentInfo();
 	void AddRandomStudent(int n);
 	void RandomStudent();
-	Tnode<T>* SearchStudent_byname();
+	
 	void ModySTudentData(Tnode<T>* Target);
+	Tnode<T>* SearchStudent_byname();
+	void Del_option();
+
 	void SortStudentUPorDOWN(bool up_1_down_0);
 	bool SortIncorDec(bool up_1_down_0, Tnode<T>* Target, Tnode<T>* temp_j);
 	void SwapStudentData_without_pre_next(Tnode<T>* pprev, Tnode<T>* pnext);
-	void InterFace();
-
-	void Del_option();
-
+	
+	void Interface();
+	
 	void initmgr();
+	
 };
 template<class T>
 void Mgr<T>::initmgr()
 {
-	obj_link = new Tlinklist<T>;
+	obj_link = new TLinklist<T>;
 	obj_fileio = new TFileio<T>;
 }
 
@@ -42,14 +45,17 @@ Mgr<T>::Mgr()
 template<class T>
 Mgr<T>::~Mgr()
 {
+	cout << "~Mgr" << endl;
+	obj_link->Del_Node_All_byhead_T(obj_link->m_Head);
 	delete obj_link;
 	delete obj_fileio;
+	
 }
 
 template<class T>
-void Mgr<T>::ShowStudentInfo()
+void Mgr<T>::StudentInfo()
 {	
-	cout << "ShowStudentInfo_START" << endl;
+	cout << "StudentInfo_START" << endl;
 	
 	Tnode<T>* temp;
 	temp = obj_link->m_Head->m_next;
@@ -57,11 +63,11 @@ void Mgr<T>::ShowStudentInfo()
 	while (temp != obj_link->m_Tail)
 	{
 		printf("    %s  |  %4d  |  %4d  |  %4d  |  %4d  |  %4d  |  %4d  |\n", 
-			temp->m_data->Name,temp->m_data->index, temp->m_data->Kor, temp->m_data->Eng,
-			temp->m_data->Math,temp->m_data->Total, temp->m_data->Average);
+			temp->m_data.Name,temp->m_data.index, temp->m_data.Kor, temp->m_data.Eng,
+			temp->m_data.Math,temp->m_data.Total, temp->m_data.Average);
 		temp = temp->m_next;
 	}
-	cout << "ShowStudentInfo_END" << endl;
+	cout << "StudentInfo_END" << endl;
 }
 
 template<class T>
@@ -70,24 +76,24 @@ void Mgr<T>::ModySTudentData(Tnode<T>* Target)
 	cout << "ModySTudentData_START" << endl;
 	
 	if (Target == obj_link->m_Tail)return;
-	if (Target->m_data->index != NULL)
+	if (Target->m_data.index != NULL)
 	{
 		printf("  %s  |  %4d  |  %4d  |  %4d  |  %4d  |  %4d  |\n",
-			Target->m_data->Name, Target->m_data->Kor, Target->m_data->Eng,
-			Target->m_data->Math, Target->m_data->Total, Target->m_data->Average);
+			Target->m_data.Name, Target->m_data.Kor, Target->m_data.Eng,
+			Target->m_data.Math, Target->m_data.Total, Target->m_data.Average);
 		obj_link->m_num++;
 	}
 	printf("이름 :");
-	scanf("%s", &Target->m_data->Name);
+	scanf("%s", &Target->m_data.Name);
 	printf("국어 :");
-	scanf("%d", &Target->m_data->Kor);
+	scanf("%d", &Target->m_data.Kor);
 	printf("영어 :");
-	scanf("%d", &Target->m_data->Eng);
+	scanf("%d", &Target->m_data.Eng);
 	printf("수학 :");
-	scanf("%d", &Target->m_data->Math);
-	Target->m_data->Total = Target->m_data->Kor + Target->m_data->Eng + Target->m_data->Math;
-	Target->m_data->Average = Target->m_data->Total / 3;
-	Target->m_data->index = Target->m_prev->m_data->index + 1;
+	scanf("%d", &Target->m_data.Math);
+	Target->m_data.Total = Target->m_data.Kor + Target->m_data.Eng + Target->m_data.Math;
+	Target->m_data.Average = Target->m_data.Total / 3;
+	Target->m_data.index = Target->m_prev->m_data.index + 1;
 	//cout<<setw(4)    == %4d
 	cout << "ModySTudentData_END" << endl;
 }
@@ -97,7 +103,7 @@ void Mgr<T>::AddRandomStudent(int n)
 {
 	if (obj_link->m_Head->m_next != obj_link->m_Tail)
 	{
-		obj_link->Del_Node_All_byhead(obj_link->m_Head);
+		obj_link->Del_Node_All_byhead_T(obj_link->m_Head);
 	}
 	
 	cout << "AddRandomStudent_START" << endl;
@@ -108,13 +114,13 @@ void Mgr<T>::AddRandomStudent(int n)
 		c[0] = rand() % 26 + 65;
 		c[1] = rand() % 26 + 65;
 		c[2] = rand() % 26 + 65;
-		strcpy(newStatus->m_data->Name, c);
-		newStatus->m_data->Kor = rand() % 101;
-		newStatus->m_data->Eng = rand() % 101;
-		newStatus->m_data->Math = rand() % 101;
-		newStatus->m_data->Total = (newStatus->m_data->Kor + newStatus->m_data->Eng + newStatus->m_data->Math);
-		newStatus->m_data->Average = (newStatus->m_data->Total) / 3;
-		newStatus->m_data->index = newStatus->m_prev->m_data->index+1;
+		strcpy(newStatus->m_data.Name, c);
+		newStatus->m_data.Kor = rand() % 101;
+		newStatus->m_data.Eng = rand() % 101;
+		newStatus->m_data.Math = rand() % 101;
+		newStatus->m_data.Total = (newStatus->m_data.Kor + newStatus->m_data.Eng + newStatus->m_data.Math);
+		newStatus->m_data.Average = (newStatus->m_data.Total) / 3;
+		newStatus->m_data.index = newStatus->m_prev->m_data.index+1;
 		obj_link->m_num++;
 	}
 	cout << "AddRandomStudent_END" << endl;
@@ -151,13 +157,13 @@ Tnode<T>* Mgr<T>::SearchStudent_byname()
 	}
 	while (temp != obj_link->m_Tail)
 	{
-		if (strstr(temp->m_data->Name, Name_for_search) != NULL)
+		if (strstr(temp->m_data.Name, Name_for_search) != NULL)
 		{
 			printf("|  이름  |  국어  |  영어  |  수학  |  총점  |  평균  |\n");
 			printf("|    %s  |  %4d  |  %4d  |  %4d  |  %4d  |  %4d  |\n",
-				temp->m_data->Name, 
-				temp->m_data->Kor, temp->m_data->Eng, temp->m_data->Math, 
-				temp->m_data->Total, temp->m_data->Average);
+				temp->m_data.Name, 
+				temp->m_data.Kor, temp->m_data.Eng, temp->m_data.Math, 
+				temp->m_data.Total, temp->m_data.Average);
 			cout << "SearchStudent_byname_END_SUCCESS" << endl;
 			return temp;
 		}
@@ -172,6 +178,7 @@ Tnode<T>* Mgr<T>::SearchStudent_byname()
 template<class T>
 void Mgr<T>::SortStudentUPorDOWN(bool up_1_down_0)
 {
+	cout << "SortSTudentData_START" << endl;
 	Tnode<T>* Target = nullptr;
 	for (Tnode<T>* temp_i = obj_link->m_Head->m_next; 
 		temp_i != obj_link->m_Tail;
@@ -188,14 +195,16 @@ void Mgr<T>::SortStudentUPorDOWN(bool up_1_down_0)
 		}
 		SwapStudentData_without_pre_next(Target, temp_i);
 	}
-	ShowStudentInfo();
+	StudentInfo();
+	cout << "SortSTudentData_END" << endl;
 }
+
 template<class T>
 bool Mgr<T>::SortIncorDec(bool up_1_down_0, Tnode<T>* Target, Tnode<T>* temp_j)
 {
 	if (up_1_down_0 == 1)
 	{
-		if (Target->m_data->Total > temp_j->m_data->Total)
+		if (Target->m_data.Total > temp_j->m_data.Total)
 		{
 			return 1;
 		}
@@ -203,52 +212,57 @@ bool Mgr<T>::SortIncorDec(bool up_1_down_0, Tnode<T>* Target, Tnode<T>* temp_j)
 	}
 	else if (up_1_down_0 == 0)
 	{
-		if (Target->m_data->Total < temp_j->m_data->Total)
+		if (Target->m_data.Total < temp_j->m_data.Total)
 		{
 			return 1;
 		}
 	}
 	return 0;
 }
+
 template<class T>
 void Mgr<T>::SwapStudentData_without_pre_next(Tnode<T>* pprev, Tnode<T>* pnext)
 {
+	cout << "SwapSTudentData_START" << endl;
 
 	Tnode<T>* temp = new Tnode<T>;
-	strcpy(temp->m_data->Name, pprev->m_data->Name);
+	strcpy(temp->m_data.Name, pprev->m_data.Name);
 	
-	temp->m_data->Kor = pprev->m_data->Kor;
-	temp->m_data->Eng = pprev->m_data->Eng;
-	temp->m_data->Math = pprev->m_data->Math;
-	temp->m_data->Total = pprev->m_data->Total;
-	temp->m_data->Average = pprev->m_data->Average;
+	temp->m_data.Kor = pprev->m_data.Kor;
+	temp->m_data.Eng = pprev->m_data.Eng;
+	temp->m_data.Math = pprev->m_data.Math;
+	temp->m_data.Total = pprev->m_data.Total;
+	temp->m_data.Average = pprev->m_data.Average;
 
 
-	strcpy(pprev->m_data->Name, pnext->m_data->Name);
-	pprev->m_data->Kor = pnext->m_data->Kor;
-	pprev->m_data->Eng = pnext->m_data->Eng;
-	pprev->m_data->Math = pnext->m_data->Math;
-	pprev->m_data->Total = pnext->m_data->Total;
-	pprev->m_data->Average = pnext->m_data->Average;
+	strcpy(pprev->m_data.Name, pnext->m_data.Name);
+	pprev->m_data.Kor = pnext->m_data.Kor;
+	pprev->m_data.Eng = pnext->m_data.Eng;
+	pprev->m_data.Math = pnext->m_data.Math;
+	pprev->m_data.Total = pnext->m_data.Total;
+	pprev->m_data.Average = pnext->m_data.Average;
 
 
-	strcpy(pnext->m_data->Name, temp->m_data->Name);
-	pnext->m_data->Kor = temp->m_data->Kor;
-	pnext->m_data->Eng = temp->m_data->Eng;
-	pnext->m_data->Math = temp->m_data->Math;
-	pnext->m_data->Total = temp->m_data->Total;
-	pnext->m_data->Average = temp->m_data->Average;
+	strcpy(pnext->m_data.Name, temp->m_data.Name);
+	pnext->m_data.Kor = temp->m_data.Kor;
+	pnext->m_data.Eng = temp->m_data.Eng;
+	pnext->m_data.Math = temp->m_data.Math;
+	pnext->m_data.Total = temp->m_data.Total;
+	pnext->m_data.Average = temp->m_data.Average;
 	
 
 	delete temp;
+	cout << "SwapSTudentData_END" << endl;
 }
 
 template<class T>
-void Mgr<T>::InterFace()
+void Mgr<T>::Interface()
 {
+	cout << "Interface_START" << endl;
 	int select = 1;
 	while (select)
 	{
+		cout << "Show_loop_START" << endl;
 //		system("cls");
 		printf("========================	성	적	관	리	======================================\n ");
 		printf("| 1:추가  | 2:수정  | 3:정렬  | 4:검색  | 5:삭제  | 6:저장  | 7:불러오기  | 8:학생정보| 9:랜덤  | 0:종료  |\n");
@@ -298,7 +312,7 @@ void Mgr<T>::InterFace()
 		}
 		case 8:INFO;		//_getch 사용
 		{
-			ShowStudentInfo();
+			StudentInfo();
 			break;
 		}
 		case 9:RANDOM;
@@ -309,11 +323,14 @@ void Mgr<T>::InterFace()
 		case 0:EXIT;
 			break;
 		}
+		cout << "Show_loop_END" << endl;
 	}
+	cout << "Interface_END" << endl;
 }
 template<class T>
 void Mgr<T>::Del_option()
 {
+	cout << "Del_option_START" << endl;
 	int choice = 0;
 	while (choice != 1 && choice != 2)
 	{
@@ -323,11 +340,12 @@ void Mgr<T>::Del_option()
 	
 	if (choice == 1)
 	{
-		obj_link->Del_Node_All_byhead(obj_link->m_Head);
+		obj_link->Del_Node_All_byhead_T(obj_link->m_Head);
 	}
 	else if (choice == 2)
 	{
 		
-		obj_link->Del_Node(obj_link->search_byindex());
+		obj_link->Del_Node_T(obj_link->search_byindex());
 	}	
+	cout << "Del_option_END" << endl;
 }
