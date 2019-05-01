@@ -1,5 +1,5 @@
 #pragma once
-#include "TStudent.h"
+#include "Std.h"
 
 template <class T>
 class Tnode
