@@ -1,3 +1,4 @@
+#include <iostream>
 #include "Tnode.h"
 
 
@@ -6,11 +7,11 @@
 
 
 template <class T>
-class TlinkedList
+class TLinklist
 {
 public:
-	TlinkedList();
-	~TlinkedList();
+	TLinklist();
+	~TLinklist();
 
 	int m_num;
 	Tnode<T>* m_Tail;
@@ -33,7 +34,7 @@ public:
 };
 
 template<class T>
-TlinkedList<T>::TlinkedList()
+TLinklist<T>::TLinklist()
 {
 	SetHead();
 	//m_num = 0;
@@ -41,7 +42,7 @@ TlinkedList<T>::TlinkedList()
 }
 
 template<class T>
-TlinkedList<T>::~TlinkedList()
+TLinklist<T>::~TLinklist()
 {
 	cout << "~Tlinklist" << endl;
 	DelHead();
@@ -49,7 +50,7 @@ TlinkedList<T>::~TlinkedList()
 
 
 template <class T>
-Tnode<T>*  TlinkedList<T>::Addlink()
+Tnode<T>*  TLinklist<T>::Addlink()
 {
 	Tnode<T>* Newnode = new Tnode<T>;
 	Tnode<T>* temp;
@@ -69,7 +70,7 @@ Tnode<T>*  TlinkedList<T>::Addlink()
 	return Newnode;
 }//T* m_next;
 template<class T>
-void TlinkedList<T>::Del_Node_T(Tnode<T>* node)
+void TLinklist<T>::Del_Node_T(Tnode<T>* node)
 {
 	Tnode<T>* temp = node;
 	temp->m_next->m_prev = temp->m_prev;
@@ -79,7 +80,7 @@ void TlinkedList<T>::Del_Node_T(Tnode<T>* node)
 	m_num--;
 }
 template<class T>
-void TlinkedList<T>::Del_Node_Tptr(Tnode<T>* node, Tnode<T>* node_for_data)
+void TLinklist<T>::Del_Node_Tptr(Tnode<T>* node, Tnode<T>* node_for_data)
 {
 	Tnode<T>* temp = node;
 	temp->m_next->m_prev = temp->m_prev;
@@ -90,7 +91,7 @@ void TlinkedList<T>::Del_Node_Tptr(Tnode<T>* node, Tnode<T>* node_for_data)
 }
 
 template<class T>
-void TlinkedList<T>::Del_Node_All_byhead_T(Tnode<T>* head)
+void TLinklist<T>::Del_Node_All_byhead_T(Tnode<T>* head)
 {
 	while (head->m_next != m_Tail)
 	{
@@ -99,7 +100,7 @@ void TlinkedList<T>::Del_Node_All_byhead_T(Tnode<T>* head)
 	}
 }
 template<class T>
-void TlinkedList<T>::Del_Node_All_byhead_Tptr(Tnode<T>* head)
+void TLinklist<T>::Del_Node_All_byhead_Tptr(Tnode<T>* head)
 {
 	while (head->m_next != m_Tail)
 	{
@@ -109,7 +110,7 @@ void TlinkedList<T>::Del_Node_All_byhead_Tptr(Tnode<T>* head)
 }
 
 template<class T>
-void TlinkedList<T>::Del_Node_byindex()
+void TLinklist<T>::Del_Node_byindex()
 {
 	Tnode<T>* temp = search_byindex();
 	temp->m_next->m_prev = temp->m_prev;
@@ -117,9 +118,9 @@ void TlinkedList<T>::Del_Node_byindex()
 	delete temp;
 	m_num--;
 }
-
+//a
 template<class T>
-void TlinkedList<T>::SetHead()
+void TLinklist<T>::SetHead()
 {
 	m_Tail = new Tnode<T>;
 	m_Head = new Tnode<T>;
@@ -131,7 +132,7 @@ void TlinkedList<T>::SetHead()
 }
 
 template<class T>
-void TlinkedList<T>::DelHead()
+void TLinklist<T>::DelHead()
 {
 	if (m_Tail != nullptr)
 		delete m_Tail;
@@ -140,7 +141,7 @@ void TlinkedList<T>::DelHead()
 }
 
 template<class T>
-Tnode<T>* TlinkedList<T>::search_byindex()
+Tnode<T>* TLinklist<T>::search_byindex()
 {
 	int index = 0;
 	while (index <= 0 || m_num < index)   //index==0 이거나 m_num보다 클때 루프

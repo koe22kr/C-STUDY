@@ -1,17 +1,17 @@
 #pragma once
-#include "TLinklist.h"
+#include "TlinkList.h"
 
 template<class T>
 class TFileio
 {
 public:
 
-void SaveStudentData(TLinklist<T>* obj);
-void LoadStudentData(TLinklist<T>* obj);
+void SaveStudentData(TlinkedList<T>* obj);
+void LoadStudentData(TlinkedList<T>* obj);
 };
 
 template<class T>
-void TFileio<T>::SaveStudentData(TLinklist<T>* obj)
+void TFileio<T>::SaveStudentData(TlinkedList<T>* obj)
 {
 	cout << "SaveStudentData_START" << endl;
 
@@ -30,7 +30,7 @@ void TFileio<T>::SaveStudentData(TLinklist<T>* obj)
 }
 
 template<class T>
-void TFileio<T>::LoadStudentData(TLinklist<T>* obj)
+void TFileio<T>::LoadStudentData(TlinkedList<T>* obj)
 {
 	cout << "LoadStudentData_START" << endl;
 	if( obj->m_Head->m_next != obj->m_Tail)

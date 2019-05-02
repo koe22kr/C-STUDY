@@ -40,6 +40,5 @@ public:
 	//int getAverage();
 	//void getdata();
 
-
 };
 

@@ -33,9 +33,10 @@ ll_StudentL* g_pLHead = new ll_StudentL;
 ll_StudentL* g_pLTail = new ll_StudentL;
 
 bool SortIncorDec(bool up_or_down, ll_StudentL* Target, ll_StudentL* TMPj);
-
 void DeleteStudentData(ll_StudentL* delpoint);
 void SwapStudentData_without_pre_next(ll_StudentL* P1, ll_StudentL* P2);
+
+
 ll_StudentL* NewStudentPtr_inLast()
 {
 

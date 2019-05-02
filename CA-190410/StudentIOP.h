@@ -143,7 +143,7 @@ void F_Add()
 	scanf("%d", &padddata->Science);
 
 	fseek(fp, 0, SEEK_SET);
-	fprintf(fp, "%d\n", ++MemberNumber);///////
+	fprintf(fp, "%d\n", ++MemberNumber);
 	fseek(fp, 0, SEEK_END);
 	fprintf(fp, "%s %d %d %d %d %d\n",
 		padddata->Name, padddata->Kor, padddata->Eng,

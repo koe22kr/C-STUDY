@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="Debug|Win32">
@@ -20,8 +20,8 @@
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>15.0</VCProjectVersion>
-    <ProjectGuid>{089128EB-8FC2-45D1-A708-9729107714AE}</ProjectGuid>
-    <RootNamespace>CA190427</RootNamespace>
+    <ProjectGuid>{CD42681D-34D1-476E-8BCD-A08BA5EC61A7}</ProjectGuid>
+    <RootNamespace>TStudentMgr</RootNamespace>
     <WindowsTargetPlatformVersion>10.0.17763.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
@@ -76,7 +76,6 @@
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>true</ConformanceMode>
-      <PreprocessorDefinitions>_MBCS;%(PreprocessorDefinitions)_CRT_SECURE_NO_WARNINGS;</PreprocessorDefinitions>
     </ClCompile>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
@@ -116,19 +115,17 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="code.cpp" />
-    <ClCompile Include="TStudent.cpp" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="Mgr_T.h" />
+    <ClInclude Include="obj_Student.h" />
+    <ClInclude Include="obj_Student_array.h" />
     <ClInclude Include="Std.h" />
-    <ClInclude Include="TFileio_T.h" />
-    <ClInclude Include="TLinklist.h" />
+    <ClInclude Include="TFileIO_T.h" />
+    <ClInclude Include="TLinkedList.h" />
+    <ClInclude Include="TMgr_T.h" />
     <ClInclude Include="TNode.h" />
-    <ClInclude Include="TStudent.h" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="ClassDiagram.cd" />
+    <ClCompile Include="obj_Student.cpp" />
+    <ClCompile Include="Sample.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -12,14 +12,7 @@ public:
 
 	Tnode<T>* m_next;
 	Tnode<T>* m_prev;
-	
-	void setnode();
 };
-template<class T>
-void Tnode<T>::setnode()
-{
-
-}
 
 template <class T>
 Tnode<T>::Tnode()
