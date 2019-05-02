@@ -15,34 +15,31 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="code.cpp">
-      <Filter>소스 파일</Filter>
-    </ClCompile>
-    <ClCompile Include="TStudent.cpp">
-      <Filter>소스 파일</Filter>
-    </ClCompile>
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="TLinklist.h">
+    <ClInclude Include="Tlinkedlist.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
     <ClInclude Include="TNode.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
-    <ClInclude Include="TStudent.h">
-      <Filter>헤더 파일</Filter>
-    </ClInclude>
     <ClInclude Include="Std.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
-    <ClInclude Include="Mgr_T.h">
+    <ClInclude Include="obj_Student.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
-    <ClInclude Include="TFileio_T.h">
+    <ClInclude Include="TFileIO.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="TMgr_notptr_T.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <None Include="ClassDiagram.cd" />
+    <ClCompile Include="obj_Student.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="TFileIO.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>
