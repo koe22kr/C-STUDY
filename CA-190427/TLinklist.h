@@ -118,7 +118,7 @@ void TLinklist<T>::Del_Node_byindex()
 	delete temp;
 	m_num--;
 }
-//a
+
 template<class T>
 void TLinklist<T>::SetHead()
 {
