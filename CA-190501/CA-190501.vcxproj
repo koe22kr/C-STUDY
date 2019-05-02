@@ -127,11 +127,11 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\CA-190427\Std.h" />
+    <ClInclude Include="..\CA-190427\TLinklist.h" />
+    <ClInclude Include="..\CA-190427\TNode.h" />
     <ClInclude Include="Que.h" />
-    <ClInclude Include="Std.h" />
-    <ClInclude Include="TLinklist.h" />
-    <ClInclude Include="TNode.h" />
-    <ClInclude Include="TStudent.h" />
+    <ClInclude Include="resource.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
