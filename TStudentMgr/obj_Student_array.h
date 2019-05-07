@@ -35,7 +35,7 @@ public:
 	//void setdata();
 
 	//int getindex();
-	void Set_Data(int data_num);
+	auto Set_Data(int data_num);
 	auto Get_Data(int data_num);
 	const char* Get_Data_Name(int data_num);
 
@@ -66,7 +66,7 @@ Student::Student(const Student &cpy_obj) //: Student(cpy_obj.Name, cpy_obj.Kor, 
 
 
 
-void Student::Set_Data(int data_num)
+auto Student::Set_Data(int data_num)
 {
 	switch (data_num)
 	{
