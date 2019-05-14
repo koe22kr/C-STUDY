@@ -1,5 +1,7 @@
 #pragma once
-//#include "Std.h"
+#include "Std.h"
+#define no_use_array
+
 #ifdef no_use_array
 
 #define NAME_LEN 10

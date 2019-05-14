@@ -15,7 +15,7 @@ int main()
   //string str = R"d-char-sequence(r-char-sequence)d-char-sequence" ;
   //             R"        -        (               )          -"
 
-
+    throw std::out_of_range("");
     ifstream file(file_name);
 
 

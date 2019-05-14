@@ -26,11 +26,11 @@ void TFileio<T>::SaveStudentData(TLinkedList<T>* obj)
 		{
 			if (i + 1 == temp->Get_T()->status_num)
 			{
-				fprintf(fp, "%d" temp->Get_T()->Get_Data(i);
+				fprintf(fp, "%d" temp->Get_T()->Get_Data(i));
 			}
 			else
 			{
-				fprintf(fp, "%d " temp->Get_T()->Get_Data(i);
+				fprintf(fp, "%d " temp->Get_T()->Get_Data(i));
 			}			
 		}
 	}
