@@ -1,9 +1,42 @@
 #include <iostream>
+#include <vector>
 using namespace std;
 //#define Base_Plus
-#define VirtualFunc
+//#define VirtualFunc
+
+int main()
+{
+    float a = 10.11f;
+    int b = 5;
+    int c = 15;
+    c < b*a * b;
+
+    return 0;
+}
+
+#ifdef first
+class test
+{
+public:
+    int a = 1;
+    int b = 2;
+    int c = 3;
+    test() {};
+    ~test() {};
+
+private:
+
+};
+void main()
+{
+    vector<int> v_int;
+    vector<string> v_string;
+    vector<test> v_test;
 
 
+    int temp = v_int; //fail
+}
+#endif
 #ifdef Base_Plus
 
 
@@ -56,9 +89,8 @@ int main()
 
 	return 0;
 }
-#endif // Base->Plus}
 
-
+#endif 
 
 #ifdef VirtualFunc
 
@@ -183,6 +215,37 @@ int main()
 }
 
 
-
-
 #endif // VirtualFunc
+
+#ifdef DEBUG
+
+#include <stdio.h>
+#include <string.h>
+#include <tchar.h>
+int main()
+{
+    char name[5][10];
+    int i, n;
+    n = 3;
+
+    printf(" [%d] 명의 이름 입력\n 학", n);
+    FILE* fp = NULL;
+    fopen_s(&fp, _T("김형기.txt"), "rt");
+    for (i = 0; i < n; i++)
+    {
+
+
+        printf(" [%d]번째 이름 : ", i);
+        fgets(name[i], sizeof(char[10]), fp);
+        //name[i][strlen(name[i]) - 1] = 0;
+    }
+
+    puts(" \n * 출 력 * ");
+    for (i = 0; i < n; i++)
+    {
+        printf(" [%d]번 째 이름 ==> %s", i, name[i]);
+    }
+
+    return 0;
+}
+#endif // DEBUG
